@@ -110,3 +110,53 @@ plt.figure(figsize=(7, 5))
 sns.heatmap(df.corr(numeric_only=True), annot=True, cmap='coolwarm')
 plt.title("Correlation Heatmap")
 plt.show()
+
+
+from sklearn.svm import SVC
+
+# Train SVM model
+svm = SVC(kernel='linear')  # You can also try 'rbf', 'poly', etc.
+svm.fit(X_train, y_train)
+svm_pred = svm.predict(X_test)
+
+# Accuracy
+svm_acc = accuracy_score(y_test, svm_pred)
+print(f"\nSVM Accuracy: {svm_acc:.2f}")
+
+# Confusion Matrix
+cm_svm = confusion_matrix(y_test, svm_pred)
+disp_svm = ConfusionMatrixDisplay(confusion_matrix=cm_svm, display_labels=svm.classes_)
+disp_svm.plot(cmap="Purples")
+plt.title("Confusion Matrix - SVM")
+plt.show()
+
+
+from sklearn.naive_bayes import GaussianNB
+
+# Train Naive Bayes model
+nb = GaussianNB()
+nb.fit(X_train, y_train)
+nb_pred = nb.predict(X_test)
+
+# Accuracy
+nb_acc = accuracy_score(y_test, nb_pred)
+print(f"\nNaive Bayes Accuracy: {nb_acc:.2f}")
+
+# Confusion Matrix
+cm_nb = confusion_matrix(y_test, nb_pred)
+disp_nb = ConfusionMatrixDisplay(confusion_matrix=cm_nb, display_labels=nb.classes_)
+disp_nb.plot(cmap="Oranges")
+plt.title("Confusion Matrix - Naive Bayes")
+plt.show()
+
+
+# Accuracy Comparison
+plt.figure(figsize=(8, 4))
+models = ['Logistic Regression', 'SVM', 'Naive Bayes']
+accuracies = [acc, svm_acc, nb_acc]
+
+sns.barplot(x=models, y=accuracies, palette='pastel')
+plt.ylim(0, 1)
+plt.title("Accuracy Comparison Across Models")
+plt.ylabel("Accuracy")
+plt.show()
